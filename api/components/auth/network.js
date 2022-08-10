@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post('/login', (req,res) => {
     ctrl.login(req.body.username, req.body.password)
-    .then(token => {
+    .then(token => {        
         success(req,res,token,200);
     })
     .catch((err) => {

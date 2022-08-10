@@ -1,5 +1,8 @@
 import * as store from '../../../store/dummy.js';
 import { sign } from '../../../auth/index.js';
+import bcrypt from 'bcrypt';
+
+
 const TABLE ='auth';
 
 function all(injectedStore) {
@@ -10,16 +13,21 @@ function all(injectedStore) {
 
     async function login(username, password) {
         const data = await store.query(TABLE, { username: username });
-        if (data.password === password) {
-            // Generate Token
-            return sign(data);
-        }
-        else {
-            throw new Error('Información Inválida');
-        }        
+
+        bcrypt.compare(password, data.password)
+        .then(equals => {
+            if(equals === true) {                   
+                return sign(data);                
+            }
+            else {
+                throw new Error('Información Inválida');
+            }
+        });
+
+        return sign(data);
     }
 
-    function upsert(data) {
+    async function upsert(data) {
         const authData = {
             id: data.id,            
         }
@@ -29,7 +37,7 @@ function all(injectedStore) {
         }
 
         if (data.password) {
-            authData.password = data.password;
+            authData.password = await bcrypt.hash(data.password,7);
         }
 
         return store.upsert(TABLE, authData);
