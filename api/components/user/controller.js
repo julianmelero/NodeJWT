@@ -1,5 +1,6 @@
 import * as store from '../../../store/dummy.js';
 import { nanoid } from 'nanoid';
+import * as auth from '../auth/index.js';
 
 const TABLE ='user';
 
@@ -17,9 +18,10 @@ function all(injectedStore) {
         return store.get(TABLE, id);
     }
 
-    function upsert(body) {
+    async function upsert(body) {
         const user = {
-            name: body.name
+            name : body.name,
+            username: body.username
         }
 
         if(body.id) {
@@ -27,6 +29,14 @@ function all(injectedStore) {
         }
         else {
             user.id = nanoid();
+        }
+        
+        if(body.password || body.username) {                                    
+            await auth.ctrl.upsert({
+                id: user.id,
+                username: user.username,
+                password: body.password,
+            })            
         }
 
         return store.upsert(TABLE, user);

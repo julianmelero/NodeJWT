@@ -2,7 +2,8 @@ import express from 'express';
 
 import { api } from '../config.js';
 
-import { router } from './components/user/network.js';
+import { router as user } from './components/user/network.js';
+import {router as auth } from './components/auth/network.js';
 
 import {setup, serve} from 'swagger-ui-express';
 
@@ -26,7 +27,8 @@ app.use(express.json());
 
 
 // ROUTES
-app.use('/api/user', router);
+app.use('/api/user', user);
+app.use('/api/auth', auth);
 app.use('/docs',serve, setup(json));
 app.listen(api.port, () => {
     console.log("API is listening in port " + api.port);
