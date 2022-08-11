@@ -1,20 +1,23 @@
-import express from 'express';
+const express = require('express');
 
-import { api } from '../config.js';
+const {api} = require('../config.js');
 
-import { router as user } from './components/user/network.js';
-import {router as auth } from './components/auth/network.js';
 
-import {setup, serve} from 'swagger-ui-express';
+const user = require('./components/user/network.js');
+const auth = require('./components/auth/network.js');
 
-import { readFile } from 'fs/promises';
+const {setup, serve} = require('swagger-ui-express');
 
-const json = JSON.parse(
-    await readFile(
+const fs = require('fs/promises');
+
+const json = require('./swagger.json');
+
+/*const json = JSON.parse(
+    await fs.readFile(
       new URL('../api/swagger.json', import.meta.url)
     )
   );
-
+*/
 const app = express();
 
 app.use(express.json());

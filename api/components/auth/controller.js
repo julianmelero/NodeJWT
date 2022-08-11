@@ -1,7 +1,6 @@
-import * as store from '../../../store/dummy.js';
-import { sign } from '../../../auth/index.js';
-import bcrypt from 'bcrypt';
-
+const store = require('../../../store/dummy.js');
+const token = require('../../../auth/index');
+const bcrypt = require('bcrypt');
 
 const TABLE ='auth';
 
@@ -17,14 +16,13 @@ function all(injectedStore) {
         bcrypt.compare(password, data.password)
         .then(equals => {
             if(equals === true) {                   
-                return sign(data);                
+                return token.signToken(data);                
             }
             else {
                 throw new Error('Información Inválida');
             }
         });
-
-        return sign(data);
+        
     }
 
     async function upsert(data) {
@@ -50,4 +48,6 @@ function all(injectedStore) {
 }
 
 
-export {all};
+module.exports = {
+    all,
+}

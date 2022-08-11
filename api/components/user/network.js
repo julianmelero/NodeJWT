@@ -1,6 +1,6 @@
-import express from 'express';
-import {success, error} from '../../../network/response.js';
-import {ctrl} from './index.js';
+const express = require('express');
+const {success, error } = require('../../../network/response');
+const  ctrl = require('./index.js');
 
 const router = express.Router();
 
@@ -38,4 +38,4 @@ router.post('/', (req,res) => {
 });
 
 
-export { router };
+module.exports = router;

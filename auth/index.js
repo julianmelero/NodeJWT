@@ -1,7 +1,46 @@
-import  jwt from 'jsonwebtoken';
+const jwt = require('jsonwebtoken');
 
-function sign(data) {
-    return jwt.sign(data,'secret')    
+const config = require('../config');
+
+
+function signToken(data) {
+    return jwt.sign(data,config.secret)    
 }
 
-export { sign };
+const check = {
+    own: function (req,owner) {
+
+    }
+}
+
+function verify(token) {
+    return jwt.verify(token,   config.secret);
+}
+
+function getToken(auth) {
+    if(!auth) {
+        throw new Error('No token');
+    }
+
+    if(auth.indexOf('Barer ' === -1)) {
+        throw new Error('Invalid format');
+    }
+
+    let token = auth.replace('Barer ', '');
+
+    return token;
+}
+
+function decodeHeader(req) {
+    const authorization = req.headers.authorization || '';
+    const token = getToken(authorization);
+    const decoded = verify(token);
+
+    req.user = decoded;
+
+    return decoded;
+}
+
+module.exports = {
+    signToken,
+}

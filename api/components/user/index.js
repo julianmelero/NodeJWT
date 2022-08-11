@@ -1,7 +1,8 @@
-import {all} from './controller.js';
-import * as store from '../../../store/dummy.js';
+const all = require('./controller.js');
 
-const ctrl = all(store);
+const store = require('../../../store/dummy.js');
 
-export { ctrl };
+const ctrl = all.all(store);
+
+module.exports = ctrl;
 

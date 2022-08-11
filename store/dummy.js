@@ -40,4 +40,4 @@ async function query(table, q) {
     return col.filter(item => item[key] === q[key])[0] || null;
 }
 
-export { list, get, upsert, remove, insert, query }
+module.exports =  { list, get, upsert, remove, insert, query }

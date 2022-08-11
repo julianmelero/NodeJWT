@@ -18,4 +18,7 @@ function error (req,res,message, status) {
     });
 }
 
-export {success,error};
+module.exports = {
+    success,
+    error
+}
