@@ -3,8 +3,9 @@ const jwt = require('jsonwebtoken');
 const config = require('../config');
 
 
-function signToken(data) {
-    return jwt.sign(data,config.secret)    
+function signToken(data) {        
+    return jwt.sign(data,config.secret.secret);
+
 }
 
 const check = {
@@ -13,8 +14,8 @@ const check = {
     }
 }
 
-function verify(token) {
-    return jwt.verify(token,   config.secret);
+function verify(token) {    
+    return jwt.verify(token, config.secret.secret);
 }
 
 function getToken(auth) {

@@ -11,9 +11,8 @@ function all(injectedStore) {
     }
 
     async function login(username, password) {
-        const data = await store.query(TABLE, { username: username });
-
-        bcrypt.compare(password, data.password)
+        const data = await store.query(TABLE, { username: username });                
+        const token_data = bcrypt.compare(password, data.password)
         .then(equals => {
             if(equals === true) {                   
                 return token.signToken(data);                
@@ -21,8 +20,8 @@ function all(injectedStore) {
             else {
                 throw new Error('Información Inválida');
             }
-        });
-        
+        });        
+        return token_data;
     }
 
     async function upsert(data) {
