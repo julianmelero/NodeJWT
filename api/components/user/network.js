@@ -2,6 +2,8 @@ const express = require('express');
 const {success, error } = require('../../../network/response');
 const  ctrl = require('./index.js');
 
+const secure = require('./secure');
+
 const router = express.Router();
 
 router.get('/', (req,res) => {
@@ -28,6 +30,16 @@ router.get('/:id', (req,res) => {
 });
 
 router.post('/', (req,res) => {
+    ctrl.upsert(req.body)
+    .then((data) => {
+        success(req,res,data, 200);
+    })
+    .catch((err) => {
+        error(req,res,err.message, 500);
+    });
+});
+
+router.put('/', secure('update'), (req,res) => {
     ctrl.upsert(req.body)
     .then((data) => {
         success(req,res,data, 200);

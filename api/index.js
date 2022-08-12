@@ -6,6 +6,8 @@ const {api} = require('../config.js');
 const user = require('./components/user/network.js');
 const auth = require('./components/auth/network.js');
 
+const errors = require('../network/errors');
+
 const {setup, serve} = require('swagger-ui-express');
 
 const fs = require('fs/promises');
@@ -33,6 +35,9 @@ app.use(express.json());
 app.use('/api/user', user);
 app.use('/api/auth', auth);
 app.use('/docs',serve, setup(json));
+
+app.use(errors.errors);
+
 app.listen(api.port, () => {
     console.log("API is listening in port " + api.port);
 })

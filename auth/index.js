@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 
 const config = require('../config');
 
-
 function signToken(data) {        
     return jwt.sign(data,config.secret.secret);
 
@@ -10,6 +9,12 @@ function signToken(data) {
 
 const check = {
     own: function (req,owner) {
+        const decoded = decodeHeader(req);
+        console.log(decoded);
+
+        if (decoded.id != owner) {
+            throw new Error("Access denied");
+        }
 
     }
 }
@@ -22,13 +27,14 @@ function getToken(auth) {
     if(!auth) {
         throw new Error('No token');
     }
-
-    if(auth.indexOf('Barer ' === -1)) {
+    console.log(auth);
+    if(auth.indexOf('Bearer ' === -1)) {
+        console.log(auth.indexOf('Bearer '));
         throw new Error('Invalid format');
     }
 
-    let token = auth.replace('Barer ', '');
-
+    let token = auth.replace('Bearer ', '');
+    console.log(token);
     return token;
 }
 
@@ -44,4 +50,5 @@ function decodeHeader(req) {
 
 module.exports = {
     signToken,
+    check
 }

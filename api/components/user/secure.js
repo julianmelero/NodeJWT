@@ -1,13 +1,11 @@
-//import { sign  } from '../../../auth/index';
+const auth = require('../../../auth/index');
 
-export default function checkAuth(action) {
-
-
+module.exports = function checkAuth(action) {
     function middleware(req,res,next) {
         switch(action) {
             case 'update':
                 const owner = req.body.id;
-                checkAuth.own(req,owner);
+                auth.check.own(req,owner);
                 break;
 
             default:
